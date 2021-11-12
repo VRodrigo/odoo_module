@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+
+         <record id="budget_action" model="ir.actions.act_window">
+            <field name="name">Budgets</field>
+            <field name="res_model">budget</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="budget_menu_root" name="Budgets"
+            sequence="7"/>
+
+        <menuitem id="budget_menu"
+            name="Budgets"
+            parent="budget_menu_root"
+            sequence="20"/>
+        
+        <menuitem id="budgets_menu" 
+            name="Budgets"
+            parent="budget_menu"
+            action="budget_action"/>
+    </data>
+</odoo>

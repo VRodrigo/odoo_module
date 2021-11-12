@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_budget_document">
+    <t t-call="web.external_layout">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)" />
+        <t t-set="address">
+            <div t-field="doc.partner_id"
+                t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+        </t>
+        <div class="page">
+            <div class="oe_structure"/>
+            <h2 class="mt16">
+                <span>Budget # </span>
+                <span t-field="doc.name"/>
+            </h2>
+            <div class="row mt32 mb32" id="informations">
+                <div t-if="doc.date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Budget Date:</strong>
+                    <p class="m-0" t-field="doc.date" t-options='{"widget": "date"}'/>
+                </div>
+                <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Salesperson:</strong>
+                    <p class="m-0" t-field="doc.user_id"/>
+                </div>
+            </div>
+
+            <h4 class="mt16">
+                <span>Products</span>
+            </h4>
+
+            <table class="table table-sm o_main_table">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-left">Description</th>
+                        <th name="th_quantity" class="text-right">Quantity</th>
+                        <th name="th_priceunit" class="text-right">Unit Price</th>
+                        <th name="th_discount" class="text-right">
+                            <span>Disc.%</span>
+                        </th>
+                        <th name="th_total" class="text-right">
+                            <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+
+                    <t t-foreach="doc.budget_line_ids" t-as="line">
+                        <tr>
+                            <td name="td_name"><span t-field="line.product_id.name"/></td>
+                            <td name="td_quantity" class="text-right">
+                                <span t-field="line.quantity"/>
+                            </td>
+                            <td name="td_priceunit" class="text-right">
+                                <span t-field="line.price_unit"/>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="line.discount"/>
+                            </td>
+                            <td name="td_subtotal" class="text-right o_price_total">
+                                <span t-field="line.total"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <br/>
+
+            <h4 t-if="doc.displacement_ids.ids" class="mt16">
+                <span>Displacements</span>
+            </h4>
+
+            <table t-if="doc.displacement_ids.ids" class="table table-sm o_main_table">
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_address" class="text-left">Address</th>
+                        <th name="th_date" class="text-right">Date</th>
+                        <th name="th_price" class="text-right">Price</th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+
+                    <t t-foreach="doc.displacement_ids" t-as="line">
+                        <tr>
+                            <td name="td_address"><span t-field="line.address"/></td>
+                            <td name="td_date" class="text-right">
+                                <span t-field="line.date"/>
+                            </td>
+                            <td name="td_price" class="text-right">
+                                <span t-field="line.price"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <div class="clearfix" name="so_total_summary">
+                <div id="total" class="row" name="total">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                        <table class="table table-sm">
+                            <tr class="border-black o_total">
+                                <td name="td_amount_total_label"><strong>Total</strong></td>
+                                <td name="td_amount_total" class="text-right">
+                                    <span t-field="doc.total"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+
+<template id="report_budget">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="odoo_budget.report_budget_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+</odoo>

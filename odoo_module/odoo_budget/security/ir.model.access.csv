@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_budget_manager,budget.manager,odoo_budget.model_budget,group_budget_manager,1,1,1,1
+access_budget_line_manager,budget.line.manager,odoo_budget.model_budget_line,group_budget_manager,1,1,1,1
+access_displacements_line_manager,displacement.line.manager,odoo_budget.model_displacement_line,group_budget_manager,1,1,1,1
+
